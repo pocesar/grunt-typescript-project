@@ -28,7 +28,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test --verbose --force"
+    "test": "grunt test --verbose"
   },
   "dependencies": {
     "array-unique": "^0.2.1",
