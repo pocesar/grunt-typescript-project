@@ -1,7 +1,7 @@
 {
   "name": "grunt-typescript-project",
   "description": "Make use of tsc --project, no need for extra code!",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/pocesar/grunt-typescript-project",
   "author": {
     "name": "Paulo Cesar",
@@ -22,7 +22,7 @@
   ],
   "peerDependencies": {
     "typescript": "*",
-    "grunt": "^1.0.1"
+    "grunt": ">=0.4.5"
   },
   "engines": {
     "node": ">= 0.8.0"
