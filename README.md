@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/pocesar/grunt-typescript-project.svg?branch=master)](https://travis-ci.org/pocesar/grunt-typescript-project)
+[![npm](https://img.shields.io/npm/v/grunt-typescript-project.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/grunt-typescript-project)
+[![Dependencies](https://david-dm.org/pocesar/grunt-typescript-project.svg)](https://david-dm.org/pocesar/grunt-typescript-project)
+
 # grunt-typescript-project
 
 > Make use of tsc --project, no need for extra code! Yet another typescript grunt plugin but for simplicity's sake, let's lend the heavy lifting to tsc, shall we?
