@@ -1,0 +1,57 @@
+{
+  "name": "grunt-typescript-project",
+  "description": "Make use of tsc --project, no need for extra code!",
+  "version": "0.0.1",
+  "homepage": "https://github.com/pocesar/grunt-typescript-project",
+  "author": {
+    "name": "Paulo Cesar",
+    "email": "email@pocesar.e4ward.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pocesar/grunt-typescript-project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pocesar/grunt-typescript-project/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/pocesar/grunt-typescript-project/blob/master/LICENSE-MIT"
+    }
+  ],
+  "peerDependencies": {
+    "typescript": "*",
+    "grunt": "^1.0.1"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test --verbose --force"
+  },
+  "dependencies": {
+    "array-unique": "^0.2.1",
+    "bluebird": "^3.4.1",
+    "deep-assign": "^2.0.0",
+    "tmp": "0.0.28"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^2.0.28",
+    "@types/grunt": "^0.4.15-alpha",
+    "@types/node": "^4.0.29",
+    "@types/tmp": "0.0.26-alpha",
+    "grunt": "^1.0.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-nodeunit": "^0.3.3"
+  },
+  "keywords": [
+    "gruntplugin",
+    "typescript",
+    "tsc",
+    "project",
+    "compile",
+    "tsconfig"
+  ]
+}

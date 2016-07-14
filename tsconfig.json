@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "outDir": "tmp/usingBooleanTsconfig"
+    },
+    "files": [
+        "test/fixtures/def.d.ts",
+        "test/fixtures/file1.ts"
+    ]
+}
