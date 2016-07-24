@@ -53,7 +53,11 @@ module.exports = function (grunt) {
 
 	grunt.registerMultiTask('typescript_project', 'Make use of tsc --project, no need for extra code!', function () {
 		// Merge task-specific and/or target-specific options with these defaults.
-		var options = this.options()
+		function customMerge(opts) {
+			return mergeOptions.apply({concatArrays: true}, [grunt.config.get('typescript_project.options')].concat(opts));
+		}
+
+		var options = customMerge(this.options())
 		var dests
 
 		if (Object.getOwnPropertyNames(options).length === 0) {
@@ -63,11 +67,11 @@ module.exports = function (grunt) {
 		if (options.tsconfig) {
 			if (options.tsconfig === true) {
 				grunt.log.ok('Using tsconfig.json in CWD as base')
-				options = this.options(grunt.file.readJSON('tsconfig.json'))
+				options = customMerge([grunt.file.readJSON('tsconfig.json'), this.options()])
 			} else if (typeof options.tsconfig === 'string') {
 				if (grunt.file.exists(options.tsconfig)) {
 					grunt.log.ok('Using ' + options.tsconfig + ' as base')
-					options = this.options(grunt.file.readJSON(options.tsconfig))
+					options = customMerge([grunt.file.readJSON(options.tsconfig), this.options()])
 				} else {
 					grunt.fail.fatal(grunt.util.error('options.tsconfig defined by not found: ' + options.tsconfig))
 				}
