@@ -9,7 +9,7 @@
 'use strict';
 
 var tmp = require('tmp')
-var deepAssign = require('deep-assign')
+var mergeOptions = require('merge-options')
 var bluebird = require('bluebird')
 var arrayUnique = require('array-unique')
 var path = require('path')
@@ -105,7 +105,7 @@ module.exports = function (grunt) {
 							return resolve()
 						}
 
-						var opts = deepAssign({compilerOptions: {
+						var opts = mergeOptions.call({concatArrays: true}, {compilerOptions: {
 							//rootDir: commonRoot(dests[dest])
 						}}, options, {files: dests[dest]})
 
