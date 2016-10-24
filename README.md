@@ -111,10 +111,34 @@ Note: Passing a "files" options will **MERGE** the ones specified in `files`. Th
 
 Also note that tsconfig.json doesn't allow wildcards in `files`. For that, you need to use `include` (available in Typescript 2.0+)
 
-The only option inside `options` object that doesn't get passed to the generated tsconfig.json is `options.tsconfig`, which can be a boolean or a string,
-it will merge the current tsconfig.json specified to the options.
-
 This hasn't been tested with `compilerOptions.watch` setting.
+
+### tsconfig.json
+
+You can specify existing `tsconfig.json` files to `options.tsconfig`, that is the only option inside `options` object that doesn't
+get passed to the generated tsconfig.json is `options.tsconfig`, which can be a boolean, a string or an array of strings, it will
+merge the current tsconfig.json specified to the options.
+
+```js
+ grunt.initConfig({
+    typescript_project: {
+      target1: {
+        tsconfig: './tsstuff/some-tsconfig.json' // specify your own filename or another location
+      },
+      target2: {
+        options: {
+          tsconfig: ['tsconfig.json','./subfolder/tsconfig.json'] // the files will be merged from left to right, in this case
+          // subfolder/tsconfig.json will overwrite tsconfig.json configurations
+        }
+      },
+      target3: {
+        options: {
+          tsconfig: true // will use the sibling tsconfig.json from Gruntfile
+        }
+      }
+    }
+ })
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

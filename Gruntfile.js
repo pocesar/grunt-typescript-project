@@ -35,6 +35,11 @@ module.exports = function(grunt) {
           tsconfig: true
         }
       },
+      usingArrayTsconfig: {
+        options: {
+          tsconfig: ['tsconfig.json','test/tsconfig.json','test/tsconfig-array.json']
+        }
+      },
       usingStringTsconfig: {
         options: {
           tsconfig: 'test/tsconfig.json'

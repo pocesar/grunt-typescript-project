@@ -41,6 +41,13 @@ exports.typescript_project = {
 
     test.done();
   },
+  usingArrayTsconfig: function(test) {
+    test.expect(1);
+
+    test.ok(grunt.file.isFile('tmp/usingArrayTsconfig/fixtures/file1.js'), 'tmp/usingArrayTsconfig/fixtures/file1.js doesnt exists');
+
+    test.done();
+  },
   usingFiles: function(test) {
     test.expect(1);
 

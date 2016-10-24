@@ -75,6 +75,17 @@ module.exports = function (grunt) {
 				} else {
 					grunt.fail.fatal(grunt.util.error('options.tsconfig defined by not found: ' + options.tsconfig))
 				}
+			} else if (typeof options.tsconfig === 'object' && options.tsconfig.length) {
+				options = customMerge([options.tsconfig.reduce(function(current, tsconfig, index){
+					grunt.verbose.ok('Current options', current);
+					if (grunt.file.exists(tsconfig)) {
+						grunt.log.ok('Reading ' + tsconfig)
+						return customMerge([current, grunt.file.readJSON(tsconfig)])
+					} else {
+						grunt.fail.fatal(grunt.util.error('options.tsconfig[' + index + ']  defined by not found: ' + tsconfig))
+					}
+					return current
+				}, {}), this.options()])
 			}
 
 			delete options.tsconfig

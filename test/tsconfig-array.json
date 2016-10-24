@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "outDir": "tmp/usingArrayTsconfig"
+    },
+    "include": [
+        "fixtures/*.ts"
+    ]
+}
