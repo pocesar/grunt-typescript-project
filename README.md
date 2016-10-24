@@ -25,10 +25,15 @@ grunt.loadNpmTasks('grunt-typescript-project');
 
 The main thing this task does is passing `options` as-is to a temporary .json file, that will call `tsc --project` on it.
 But why? Instead of having a lot of `tsconfig.json` files inside many folders (when your project is scattered across many folders).
-Plus, you can reuse the same options (the main useful ones are `noImplicitAny` and `noImplicitUseStrict` for quality of code, IMHO).
+Plus, you can reuse the same options and overwrite the config per target, either using files or options.
 
 Since it doesn't rely on internal API of Typescript, it should work with current and future versions, plus any future options can
 be added to the json without having to update this plugin.
+
+Automated tests are made against `typescript@latest`, `typescript@next`, `typescript@rc` and `typescript@1` (considered legacy now)
+
+Some features won't work with TypeScript < 2 (like include, exclude, rootDirs, etc). For that, use the grunt `files`
+property.
 
 ## The "typescript_project" task
 
@@ -55,7 +60,7 @@ grunt.initConfig({
         'dest/has/extension.js': ['srcs/**/*.ts']
       },
       options: {
-        compilerOptions {
+        compilerOptions: {
           module: "umd"
         },
         include: [
@@ -80,6 +85,7 @@ https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 
 There are no default options, so the minimum required setting is to set [`options.tsconfig` to true (to use your
 existing tsconfig.json file](#tsconfig.json)
+
 
 Note: Passing a "files" options will **MERGE** the ones specified in `files`. This is mainly useful to include typings
 for all your compile targets. But don't include non typings!
@@ -148,7 +154,6 @@ merge the current tsconfig.json specified to the options.
 NB: The `tsconfig.json` working dir (regardless where it's placed) is considered to be the same level of `Gruntfile.js` unless
 you specify `rootDir`. Because the merge happens with only the file contents, the plugin is unaware of file paths
 (and tampering trying to fix file paths inside the merged options is a foot gun)
-
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
