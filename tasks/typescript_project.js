@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 		return s && s.indexOf('.js') !== -1
 	}
 
-	function runTsc(json) {
+	function runTsc(json, noEmitOnError) {
 		return new bluebird(function (resolve, reject) {
 			grunt.util.spawn({
 				cmd: 'tsc',
@@ -37,7 +37,11 @@ module.exports = function (grunt) {
 					stdio: [process.stdin, process.stdout, process.stderr]
 				}
 			}, function(error, result, code){
-				resolve()
+				if (error && noEmitOnError) {
+					reject(error)
+				} else {
+					resolve()
+				}
 			})
 		})
 	}
@@ -61,7 +65,7 @@ module.exports = function (grunt) {
 		var dests
 
 		if (Object.getOwnPropertyNames(options).length === 0) {
-			grunt.fail.warn('You must specify at least tsconfig option')
+			grunt.fail.warn('You must specify at least the `options.tsconfig` inside your target')
 		}
 
 		if (options.tsconfig) {
@@ -136,7 +140,7 @@ module.exports = function (grunt) {
 
 						grunt.file.write(tmpPath, JSON.stringify(opts))
 
-						runTsc(tmpPath).then(cleanup, cleanup)
+						runTsc(tmpPath, opts && opts.compilerOptions && opts.compilerOptions.noEmitOnError).then(cleanup, cleanup)
 					})
 				})
 			}, true).then(function () {
@@ -164,7 +168,7 @@ module.exports = function (grunt) {
 
 					grunt.file.write(tmpPath, JSON.stringify(options))
 
-					runTsc(tmpPath).then(cleanup, cleanup)
+					runTsc(tmpPath, options && options.compilerOptions && options.compilerOptions.noEmitOnError).then(cleanup, cleanup)
 				})
 			})).then(function(){
 				done()

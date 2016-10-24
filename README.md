@@ -27,11 +27,8 @@ The main thing this task does is passing `options` as-is to a temporary .json fi
 But why? Instead of having a lot of `tsconfig.json` files inside many folders (when your project is scattered across many folders).
 Plus, you can reuse the same options (the main useful ones are `noImplicitAny` and `noImplicitUseStrict` for quality of code, IMHO).
 
-Since it doesn't rely on internal API of Typescript, it should work with current and future versions, plus any future options can be added
-to the json without having to update this plugin.
-
-At the moment, this is highly experimental, being used as an internal process for a platform. Expect anything below 1.0 to be unstable.
-(but be assured it's being used)
+Since it doesn't rely on internal API of Typescript, it should work with current and future versions, plus any future options can
+be added to the json without having to update this plugin.
 
 ## The "typescript_project" task
 
@@ -81,9 +78,11 @@ Everything that does inside `options` can be defined from this options:
 
 https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 
-There are no default options, so either set tsconfig to true (to use your existing tsconfig.json file)
+There are no default options, so the minimum required setting is to set [`options.tsconfig` to true (to use your
+existing tsconfig.json file](#tsconfig.json)
 
-Note: Passing a "files" options will **MERGE** the ones specified in `files`. This is mainly useful to include typings for all your compile targets. But don't include non typings!
+Note: Passing a "files" options will **MERGE** the ones specified in `files`. This is mainly useful to include typings
+for all your compile targets. But don't include non typings!
 
 ```js
   grunt.initConfig({
@@ -113,6 +112,10 @@ Also note that tsconfig.json doesn't allow wildcards in `files`. For that, you n
 
 This hasn't been tested with `compilerOptions.watch` setting.
 
+Using `grunt typescript_project --verbose` will pass `--listFiles` to tsc internally
+
+Also having `noEmitOnError` anywhere on your settings will make the grunt task itself fail (otherwise it will continue)
+
 ### tsconfig.json
 
 You can specify existing `tsconfig.json` files to `options.tsconfig`, that is the only option inside `options` object that doesn't
@@ -123,7 +126,9 @@ merge the current tsconfig.json specified to the options.
  grunt.initConfig({
     typescript_project: {
       target1: {
-        tsconfig: './tsstuff/some-tsconfig.json' // specify your own filename or another location
+        options: {
+          tsconfig: './tsstuff/some-tsconfig.json' // specify your own filename or another location
+        }
       },
       target2: {
         options: {
@@ -139,6 +144,11 @@ merge the current tsconfig.json specified to the options.
     }
  })
 ```
+
+NB: The `tsconfig.json` working dir (regardless where it's placed) is considered to be the same level of `Gruntfile.js` unless
+you specify `rootDir`. Because the merge happens with only the file contents, the plugin is unaware of file paths
+(and tampering trying to fix file paths inside the merged options is a foot gun)
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

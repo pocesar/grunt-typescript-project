@@ -3,6 +3,6 @@
         "outDir": "tmp/usingStringTsconfig"
     },
     "include": [
-        "fixtures/*.ts"
+        "*/fixtures/*.ts"
     ]
 }

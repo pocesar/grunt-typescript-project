@@ -68,7 +68,17 @@ module.exports = function(grunt) {
           ]
         }
       },
-      //usingNothing: { },
+      usingNothing: { },
+      usingNoEmitOnError: {
+        files: {
+          'tmp/usingNoEmitOnError': ['test/fixtures/shouldfail/*.ts']
+        },
+        options: {
+          compilerOptions: {
+            noEmitOnError: true
+          }
+        }
+      },
     },
 
     // Unit tests.
@@ -85,10 +95,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-continue');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'typescript_project', 'nodeunit']);
+  grunt.registerTask('test', [
+    'clean',
+    'continue:on',
+    'typescript_project',
+    'nodeunit'
+  ]);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

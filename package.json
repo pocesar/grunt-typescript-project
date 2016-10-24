@@ -1,7 +1,7 @@
 {
   "name": "grunt-typescript-project",
   "description": "Make use of tsc --project, no need for extra code!",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/pocesar/grunt-typescript-project",
   "author": {
     "name": "Paulo Cesar",
@@ -14,12 +14,7 @@
   "bugs": {
     "url": "https://github.com/pocesar/grunt-typescript-project/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/pocesar/grunt-typescript-project/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "peerDependencies": {
     "typescript": "*",
     "grunt": ">=0.4.5"
@@ -42,6 +37,7 @@
     "@types/node": "^6.0.45",
     "@types/tmp": "^0.0.31",
     "grunt": "^1.0.1",
+    "grunt-continue": "^0.1.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-nodeunit": "^1.0.0"

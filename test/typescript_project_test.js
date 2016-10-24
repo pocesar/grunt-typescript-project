@@ -55,6 +55,13 @@ exports.typescript_project = {
 
     test.done();
   },
+  usingNoEmitOnError: function(test) {
+    test.expect(1);
+
+    test.ok(!grunt.file.isFile('tmp/usingNoEmitOnError/should_fail.js'), 'tmp/usingNoEmitOnError/should_fail.js exists');
+
+    test.done();
+  },
   usingOptions: function(test) {
     test.expect(1);
 

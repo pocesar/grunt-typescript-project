@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "outDir": "tmp/usingArrayTsconfig"
+        "outDir": "tmp/usingArrayTsconfig",
+        "rootDir": "test"
     },
     "include": [
         "fixtures/*.ts"
