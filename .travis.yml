@@ -1,7 +1,15 @@
 language: node_js
+
 node_js:
   - "6"
   - "4"
+
+env:
+  - TS="typescript@latest"
+  - TS="typescript@next"
+  - TS="typescript@rc"
+  - TS="typescript@1"
+
 before_install:
   - npm install grunt-cli -g
-  - npm install grunt typescript
+  - npm install grunt $TS
