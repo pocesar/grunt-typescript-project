@@ -27,10 +27,10 @@ module.exports = function (grunt) {
 		return s && s.indexOf('.js') !== -1
 	}
 
-	function runTsc(json, noEmitOnError) {
+	function runTsc(json, noEmitOnError, compiler) {
 		return new bluebird(function (resolve, reject) {
 			grunt.util.spawn({
-				cmd: 'tsc',
+				cmd: compiler,
 				args: ['--project', json].concat(grunt.option.flags().indexOf('--verbose') !== -1 ? ['--listFiles'] : []),
 				opts: {
 					cwd: process.cwd(),
@@ -63,6 +63,7 @@ module.exports = function (grunt) {
 
 		var options = customMerge(this.options())
 		var dests
+		var compiler = 'tsc'
 
 		if (Object.getOwnPropertyNames(options).length === 0) {
 			grunt.fail.warn('You must specify at least the `options.tsconfig` inside your target')
@@ -93,6 +94,11 @@ module.exports = function (grunt) {
 			}
 
 			delete options.tsconfig
+		}
+
+		if (options.customCompiler) {
+			compiler = options.customCompiler
+			delete options.customCompiler
 		}
 
 		grunt.verbose.ok('Current options', options)
@@ -140,7 +146,7 @@ module.exports = function (grunt) {
 
 						grunt.file.write(tmpPath, JSON.stringify(opts))
 
-						runTsc(tmpPath, opts && opts.compilerOptions && opts.compilerOptions.noEmitOnError).then(cleanup, cleanup)
+						runTsc(tmpPath, opts && opts.compilerOptions && opts.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
 					})
 				})
 			}, true).then(function () {
@@ -168,7 +174,7 @@ module.exports = function (grunt) {
 
 					grunt.file.write(tmpPath, JSON.stringify(options))
 
-					runTsc(tmpPath, options && options.compilerOptions && options.compilerOptions.noEmitOnError).then(cleanup, cleanup)
+					runTsc(tmpPath, options && options.compilerOptions && options.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
 				})
 			})).then(function(){
 				done()

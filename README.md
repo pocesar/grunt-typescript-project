@@ -86,6 +86,8 @@ https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 There are no default options, so the minimum required setting is to set [`options.tsconfig` to true (to use your
 existing tsconfig.json file](#tsconfig.json)
 
+By default globally installed `tsc` will be used. If you want to change that - specify path to custom compiler in
+`customCompiler` option.
 
 Note: Passing a "files" options will **MERGE** the ones specified in `files`. This is mainly useful to include typings
 for all your compile targets. But don't include non typings!
