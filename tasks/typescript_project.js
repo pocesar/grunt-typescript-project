@@ -13,6 +13,7 @@ var mergeOptions = require('merge-options')
 var bluebird = require('bluebird')
 var arrayUnique = require('array-unique')
 var path = require('path')
+var which = require('which')
 
 module.exports = function (grunt) {
 
@@ -27,6 +28,30 @@ module.exports = function (grunt) {
 		return s && s.indexOf('.js') !== -1
 	}
 
+	function reportVersion(compiler, cb) {
+		which(compiler, function(err, resultPath){
+			if (err) {
+				return cb(err)
+			}
+
+			grunt.util.spawn({
+				cmd: compiler,
+				args: ['-v'],
+				opts: {
+					cwd: process.cwd(),
+					stdio: false
+				}
+			}, function(err, result){
+				if (err) {
+					return cb(new Error(err))
+				}
+
+				grunt.verbose.ok('Using Typescript', '' + result, '(' + resultPath + ')')
+				cb()
+			})
+		})
+	}
+
 	function runTsc(json, noEmitOnError, compiler) {
 		return new bluebird(function (resolve, reject) {
 			grunt.util.spawn({
@@ -34,11 +59,12 @@ module.exports = function (grunt) {
 				args: ['--project', json].concat(grunt.option.flags().indexOf('--verbose') !== -1 ? ['--listFiles'] : []),
 				opts: {
 					cwd: process.cwd(),
+					env: process.env,
 					stdio: [process.stdin, process.stdout, process.stderr]
 				}
 			}, function(error, result, code){
 				if (error && noEmitOnError) {
-					reject(error)
+					reject(error instanceof Error ? error : new Error(error))
 				} else {
 					resolve()
 				}
@@ -105,16 +131,61 @@ module.exports = function (grunt) {
 
 		var done = this.async()
 
-		if (this.files.length) {
-			dests = this.files.reduce(function (dests, element) {
-				dests[element.dest] = arrayUnique(element.src.concat(options.files ? options.files : []))
-				return dests
-			}, {})
+		reportVersion(compiler, function(err){
+			if (err) {
+				return done(err)
+			}
 
-			tmp.setGracefulCleanup()
+			if (this.files.length) {
+				dests = this.files.reduce(function (dests, element) {
+					dests[element.dest] = arrayUnique(element.src.concat(options.files ? options.files : []))
+					return dests
+				}, {})
 
-			bluebird.reduce(Object.keys(dests), function (current, dest) {
-				return new bluebird(function (resolve, reject) {
+				tmp.setGracefulCleanup()
+
+				bluebird.reduce(Object.keys(dests), function (current, dest) {
+					return new bluebird(function (resolve, reject) {
+						tmp.file({ dir: process.cwd(), prefix: 'tsconfig-', postfix: '.json' }, function (err, tmpPath, fd, cleanupCallback) {
+							if (err) {
+								return reject(err)
+							}
+
+							var cleanup = function(err) {
+								cleanupCallback()
+
+								if (err) {
+									return reject(err)
+								}
+
+								return resolve()
+							}
+
+							var opts = mergeOptions.call({concatArrays: true}, {compilerOptions: {
+								//rootDir: commonRoot(dests[dest])
+							}}, options, {files: dests[dest]})
+
+							if (consideredFile(dest)) {
+								opts.compilerOptions.outFile = dest
+							}
+
+							if (consideredFolder(dest)) {
+								opts.compilerOptions.outDir = dest
+							}
+
+							grunt.verbose.ok('Will generate', opts)
+
+							grunt.file.write(tmpPath, JSON.stringify(opts))
+
+							runTsc(tmpPath, opts && opts.compilerOptions && opts.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
+						})
+					})
+				}, true).then(function () {
+					done()
+				}, done)
+
+			} else if (Object.keys(options).length) {
+				(new bluebird(function (resolve, reject) {
 					tmp.file({ dir: process.cwd(), prefix: 'tsconfig-', postfix: '.json' }, function (err, tmpPath, fd, cleanupCallback) {
 						if (err) {
 							return reject(err)
@@ -130,59 +201,22 @@ module.exports = function (grunt) {
 							return resolve()
 						}
 
-						var opts = mergeOptions.call({concatArrays: true}, {compilerOptions: {
-							//rootDir: commonRoot(dests[dest])
-						}}, options, {files: dests[dest]})
+						grunt.verbose.ok('Will generate', options)
 
-						if (consideredFile(dest)) {
-							opts.compilerOptions.outFile = dest
-						}
+						grunt.file.write(tmpPath, JSON.stringify(options))
 
-						if (consideredFolder(dest)) {
-							opts.compilerOptions.outDir = dest
-						}
-
-						grunt.verbose.ok('Will generate', opts)
-
-						grunt.file.write(tmpPath, JSON.stringify(opts))
-
-						runTsc(tmpPath, opts && opts.compilerOptions && opts.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
+						runTsc(tmpPath, options && options.compilerOptions && options.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
 					})
-				})
-			}, true).then(function () {
+				})).then(function(){
+					done()
+				}, done)
+			} else {
+				grunt.fail.warn('Found no options or files, doing nothing');
 				done()
-			}, done)
+			}
 
-		} else if (Object.keys(options).length) {
-			(new bluebird(function (resolve, reject) {
-				tmp.file({ dir: process.cwd(), prefix: 'tsconfig-', postfix: '.json' }, function (err, tmpPath, fd, cleanupCallback) {
-					if (err) {
-						return reject(err)
-					}
+		}.bind(this))
 
-					var cleanup = function(err) {
-						cleanupCallback()
-
-						if (err) {
-							return reject(err)
-						}
-
-						return resolve()
-					}
-
-					grunt.verbose.ok('Will generate', options)
-
-					grunt.file.write(tmpPath, JSON.stringify(options))
-
-					runTsc(tmpPath, options && options.compilerOptions && options.compilerOptions.noEmitOnError, compiler).then(cleanup, cleanup)
-				})
-			})).then(function(){
-				done()
-			}, done)
-		} else {
-			grunt.fail.warn('Found no options or files, doing nothing');
-			done()
-		}
 	});
 
 };

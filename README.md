@@ -7,6 +7,7 @@
 > Make use of tsc --project, no need for extra code! Yet another typescript grunt plugin but for simplicity's sake, let's lend the heavy lifting to tsc, shall we?
 
 ## Getting Started
+
 This plugin requires Grunt `^1.0.0`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
@@ -38,6 +39,7 @@ property.
 ## The "typescript_project" task
 
 ### Overview
+
 In your project's Gruntfile, add a section named `typescript_project` to the data object passed into `grunt.initConfig()`.
 
 ```js
@@ -96,6 +98,7 @@ for all your compile targets. But don't include non typings!
   grunt.initConfig({
     typescript_project: {
       options: {
+        customCompiler: require.resolve('./somefolder/bin/tsc'),
         files: [
           "./typings/type1.d.ts",
           "./typings/type2.d.ts",
@@ -158,5 +161,6 @@ you specify `rootDir`. Because the merge happens with only the file contents, th
 (and tampering trying to fix file paths inside the merged options is a foot gun)
 
 ## Contributing
+
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
