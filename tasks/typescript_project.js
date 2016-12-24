@@ -165,11 +165,11 @@ module.exports = function (grunt) {
 								//rootDir: commonRoot(dests[dest])
 							}}, options, {files: dests[dest]})
 
-							if (consideredFile(dest)) {
+							if (opts.compilerOptions.outFile == null && consideredFile(dest)) {
 								opts.compilerOptions.outFile = dest
 							}
 
-							if (consideredFolder(dest)) {
+							if (opts.compilerOptions.outDir == null && consideredFolder(dest)) {
 								opts.compilerOptions.outDir = dest
 							}
 
