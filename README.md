@@ -86,7 +86,7 @@ Everything that does inside `options` can be defined from this options:
 https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 
 There are no default options, so the minimum required setting is to set [`options.tsconfig` to true (to use your
-existing tsconfig.json file](#tsconfig.json)
+existing tsconfig.json file](#tsconfigjson)
 
 By default globally installed `tsc` will be used. If you want to change that - specify path to custom compiler in
 `customCompiler` option.

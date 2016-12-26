@@ -1,7 +1,7 @@
 {
   "name": "grunt-typescript-project",
   "description": "Make use of tsc --project, no need for extra code!",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/pocesar/grunt-typescript-project",
   "author": {
     "name": "Paulo Cesar",
@@ -27,20 +27,20 @@
   },
   "dependencies": {
     "array-unique": "^0.3.2",
-    "bluebird": "^3.4.6",
+    "bluebird": "^3.4.7",
     "merge-options": "^0.0.64",
-    "tmp": "^0.0.29",
-    "which": "^1.2.11"
+    "tmp": "^0.0.31",
+    "which": "^1.2.12"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.0.35",
+    "@types/bluebird": "^3.0.36",
     "@types/grunt": "^0.4.20",
-    "@types/node": "^6.0.45",
-    "@types/tmp": "^0.0.31",
+    "@types/node": "^6.0.53",
+    "@types/tmp": "^0.0.32",
     "grunt": "^1.0.1",
     "grunt-continue": "^0.1.0",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-nodeunit": "^1.0.0"
   },
   "keywords": [
