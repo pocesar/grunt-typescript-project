@@ -28,7 +28,7 @@
   "dependencies": {
     "array-unique": "^0.3.2",
     "bluebird": "^3.4.7",
-    "merge-options": "^0.0.64",
+    "merge-options": "^1.0.1",
     "tmp": "^0.0.31",
     "which": "^1.2.12"
   },
